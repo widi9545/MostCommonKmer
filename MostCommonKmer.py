@@ -49,7 +49,8 @@ def fileToRead(fileToOpen, kmerLength):
 			if y > sequenceIndicies[x-1] and y < sequenceIndicies[x]:
 				output.append(sequences[y])
 	kmerString = "".join(output)
-	commonKmer(kmerString, kmerLength)
+	kmerDict = commonKmer(kmerString, kmerLength)
+	kmerSequences(kmerLength, kmerDict, sequenceIndicies, sequences)
 
 
 def commonKmer(kmerString, kmerLength):
@@ -60,7 +61,7 @@ def commonKmer(kmerString, kmerLength):
 	top5 = []
 	z = []
 
-	for x in range(0, (len(kmerString))):
+	for x in range(0, ((len(kmerString))-kmerLen)+1):
 		kmerFormer = kmerString[x:x+kmerLen]
 		if kmerFormer not in kmerDict:
 			kmerDict[kmerFormer] = 1
@@ -71,23 +72,43 @@ def commonKmer(kmerString, kmerLength):
 	top5.reverse()
 	for x in range(0,5):
 		print top5[x]
+	return kmerDict
 
-def kmersequences(kmerString, kmerLength):
-	return 1
+def kmerSequences(kmerLength, kmerDict, sequenceIndicies, sequences):
+	sequenceID = sequenceIndicies
+	kmerDict = kmerDict
+	kmerLength = kmerLength
+	sequences = sequences
+	kmerFormer = []
+	kmerCounter = []
+	counter = []
+
+
+
+	for x in range(1, len(sequenceID), 2):
+		for y in range(0, len(sequences)):
+			if y >= sequenceID[x-1] and y < sequenceIndicies[x]:
+				kmerFormer.append(sequences[y])
+
+	kmerFormer = "".join(kmerFormer)
+	for x in kmerDict:
+		for y in kmerFormer:
+			if y != "\n":
+				kmerCounter.append(y)
+			if len(kmerCounter) == len(x):
+				kmerCounter = "".join(kmerCounter)
+				if kmerCounter == x:
+					counter.append(kmerCounter)
+					kmerCounter = []
+				else:
+					kmerCounter = []
+	print counter
+
 	
 
 
-		
-		
-		
-			
-	 
-			
-		
-	
 
 
-		
 
 
 
