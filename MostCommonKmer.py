@@ -1,4 +1,7 @@
 import math, getopt, sys, os.path, time
+#William Diment
+#CSCI 4314
+#References: CLRS pg 
 
 def main(argv):
 	inputFile = ''
@@ -67,50 +70,47 @@ def commonKmer(kmerString, kmerLength):
 			kmerDict[kmerFormer] = 1
 		else:
 			kmerDict[kmerFormer] += 1
+
 	top5 = kmerDict.items()
 	top5.sort(key=lambda z: z[1])
 	top5.reverse()
-	for x in range(0,5):
-		print top5[x]
+	#for x in range(0,5):
+		#print top5[x]
+	print kmerDict
 	return kmerDict
 
-def kmerSequences(kmerLength, kmerDict, sequenceIndicies, sequences):
+def kmerSequences(kmerLength, kmerDict, sequenceIndicies, kmerSeq):
 	sequenceID = sequenceIndicies
 	kmerDict = kmerDict
-	kmerLength = kmerLength
-	sequences = sequences
-	kmerFormer = []
-	kmerCounter = []
-	counter = []
-
-
-
-	for x in range(1, len(sequenceID), 2):
-		for y in range(0, len(sequences)):
-			if y >= sequenceID[x-1] and y < sequenceIndicies[x]:
-				kmerFormer.append(sequences[y])
-
-	kmerFormer = "".join(kmerFormer)
-	for x in kmerDict:
-		for y in kmerFormer:
-			if y != "\n":
-				kmerCounter.append(y)
-			if len(kmerCounter) == len(x):
-				kmerCounter = "".join(kmerCounter)
-				if kmerCounter == x:
-					counter.append(kmerCounter)
-					kmerCounter = []
-				else:
-					kmerCounter = []
-	print counter
-
+	kmerLength = int(kmerLength)
+	kmerSequences = kmerSeq
+	
+	output = []
+	commonDict = {x: 0 for x in kmerDict}
 	
 
 
 
+	kmerFormer = ""
+	kmerFinal = ""
 
+	for x in range(1, len(sequenceIndicies),2):
+		for y in range (0, len(kmerSequences)):
+			if y >= sequenceIndicies[x-1] and y < sequenceIndicies[x]:
+				output.append(kmerSequences[y])
+	
+	kmerFormer = kmerFormer.join(output)
+	kmerFormer = kmerFormer.split()
+	#print kmerFormer
 
-
+	for z in kmerDict:
+		for x in range(0, len(kmerFormer)):
+			for y in range(0, (len(kmerFormer[x])-kmerLength)+1):
+				kmerFinal = kmerFormer[x][y:y+kmerLength]
+				if kmerFinal == z:
+					commonDict[kmerFinal] += 1
+					break
+	print commonDict
 
 
 if __name__ == "__main__":
