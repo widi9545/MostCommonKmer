@@ -74,9 +74,10 @@ def commonKmer(kmerString, kmerLength):
 	top5 = kmerDict.items()
 	top5.sort(key=lambda z: z[1])
 	top5.reverse()
-	#for x in range(0,5):
-		#print top5[x]
-	print kmerDict
+
+	print "The five most common kmers are: \n"
+	for x in range(0,5):
+		print top5[x]
 	return kmerDict
 
 def kmerSequences(kmerLength, kmerDict, sequenceIndicies, kmerSeq):
@@ -86,10 +87,7 @@ def kmerSequences(kmerLength, kmerDict, sequenceIndicies, kmerSeq):
 	kmerSequences = kmerSeq
 	
 	output = []
-	commonDict = {x: 0 for x in kmerDict}
-	
-
-
+	commonKmerDict = {x: 0 for x in kmerDict}
 
 	kmerFormer = ""
 	kmerFinal = ""
@@ -108,9 +106,17 @@ def kmerSequences(kmerLength, kmerDict, sequenceIndicies, kmerSeq):
 			for y in range(0, (len(kmerFormer[x])-kmerLength)+1):
 				kmerFinal = kmerFormer[x][y:y+kmerLength]
 				if kmerFinal == z:
-					commonDict[kmerFinal] += 1
+					commonKmerDict[kmerFinal] += 1
 					break
-	print commonDict
+	commonKmerDict = commonKmerDict.items()
+	commonKmerDict.sort(key=lambda z: z[1])
+	commonKmerDict.reverse()
+
+	print "The kmers that occur in the most sequences are: \n"
+	for x in range(0,5):
+		print commonKmerDict[x]
+
+
 
 
 if __name__ == "__main__":
