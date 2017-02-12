@@ -26,6 +26,8 @@ def main(argv):
 				sys.exit(2)
 			else:
 				kmerLength = arg
+	print "File:", inputFile
+	print "k-mer Length:", kmerLength
 	fileToRead(inputFile, kmerLength)
 
 
@@ -49,7 +51,7 @@ def fileToRead(fileToOpen, kmerLength):
 
 	for x in range(1, len(sequenceIndicies),2):
 		for y in range (0, len(sequences)):
-			if y > sequenceIndicies[x-1] and y < sequenceIndicies[x]:
+			if y >= sequenceIndicies[x-1] and y < sequenceIndicies[x]:
 				output.append(sequences[y])
 	kmerString = "".join(output)
 	kmerDict = commonKmer(kmerString, kmerLength)
@@ -65,6 +67,8 @@ def commonKmer(kmerString, kmerLength):
 	z = []
 
 	for x in range(0, ((len(kmerString))-kmerLen)+1):
+		if x == "\n":
+			break
 		kmerFormer = kmerString[x:x+kmerLen]
 		if kmerFormer not in kmerDict:
 			kmerDict[kmerFormer] = 1
@@ -75,7 +79,7 @@ def commonKmer(kmerString, kmerLength):
 	top5.sort(key=lambda z: z[1])
 	top5.reverse()
 
-	print "The five most common kmers are: \n"
+	print "k-mers - Occurences \n"
 	for x in range(0,5):
 		print top5[x]
 	return kmerDict
@@ -99,7 +103,7 @@ def kmerSequences(kmerLength, kmerDict, sequenceIndicies, kmerSeq):
 	
 	kmerFormer = kmerFormer.join(output)
 	kmerFormer = kmerFormer.split()
-	#print kmerFormer
+	
 
 	for z in kmerDict:
 		for x in range(0, len(kmerFormer)):
@@ -112,12 +116,9 @@ def kmerSequences(kmerLength, kmerDict, sequenceIndicies, kmerSeq):
 	commonKmerDict.sort(key=lambda z: z[1])
 	commonKmerDict.reverse()
 
-	print "The kmers that occur in the most sequences are: \n"
+	print "k-mers - Seq Count: \n"
 	for x in range(0,5):
 		print commonKmerDict[x]
-
-
-
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
